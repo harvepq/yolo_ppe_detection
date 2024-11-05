@@ -4,36 +4,89 @@ from datetime import datetime
 import os
 import time
 
-# Ask the user whether to use one or two cameras
-num_cameras = int(input('Enter the number of cameras to use (1 or 2): '))
+# Function to initialize a camera conection
+def initialize_cameras(opt, url_camera):
+  cameras = []
+  # Capture Cameras
+  if (opt == '1' or opt == '3'):
+    cap1 = cv2.VideoCapture(url_camera['channel1'])
+    # Verify is camera 1 is opened
+    if not cap1.isOpened():
+      print(f'Error: Could not open the camera in channel 101')
+    # Add camera into list
+    else:
+      cameras.append(
+        {'cap': cap1,
+         'name': 'Camera 1',
+         'channel': '1',
+         'capture': True,
+         'capture_num': 0,
+         'last_attempt': time.time()
+        }
+      )
+
+  if (opt == '2' or opt == '3'):
+    cap2 = cv2.VideoCapture(url_camera['channel2'])
+    # Verify is camera 2 is opened
+    if not cap2.isOpened():
+      print(f'Error: Could not open the camera in channel 201')
+    # Add camera into list
+    else:
+      cameras.append(
+        {'cap': cap2,
+         'name': 'Camera 2',
+         'capture': False,
+         'channel': '2',
+         'capture_num': 0,
+         'last_attempt': time.time()
+        }
+      )
+
+  return cameras
+
+# Camera menu option
+def menu (level):
+  if level == 1:
+    print('DATA CAPTURE FOR DETECTION OF PPE')
+    print('----------------------------------')
+    print('')
+    print('1 -> Only Capture Images')
+    print('2 -> Only View Real Time Video')
+    print('3 -> Both, Capture Images and View Real Time Video')
+    opt = input('Select one option (1, 2, or 3): ')
+
+  # Ask the user whether to use one or two cameras, or both
+  else:
+    print('Select the cameras!')
+    print('1 -> Camera 1')
+    print('2 -> Camera 2')
+    print('3 -> Both, Camera 1 and Camera 2')
+    opt = input('Select one option (1, 2, or 3): ')
+
+  while not (opt in ['1', '2', '3']):
+    opt = input('Select one correct option again (1, 2, or 3): ')
+
+  # Return option
+  return opt
+
+# Ask menu
+opt_1 = menu(1)
+ip_num = input('Enter the IP point: ')
+opt_2 = menu(2)
 
 # Define cameras
-camera1 = 'rtsp://admin:fypsfa24$$@192.168.188.104/Streaming/channels/101'
-camera2 = 'rtsp://admin:fypsfa24$$@192.168.188.104/Streaming/channels/201' if num_cameras == 2 else None
+protocol = f'rtsp://admin:fypsfa24$$@192.168.188.{ip_num}/Streaming/channels/'
+url_camera = {
+  'channel1': f'{protocol}101',
+  'channel2': f'{protocol}201'
+}
 
-# Function to initialize a camera conection
-def initialize_camera(camera):
-  cap = cv2.VideoCapture(camera)
-  # Check if the camera opened successfully
-  if not cap.isOpened():
-    print(f'Error: Could not open {camera}')
-  return cap
-
-# Initialize cameras
-cap1 = initialize_camera(camera1) if num_cameras >= 1 else None
-cap2 = initialize_camera(camera2) if num_cameras == 2 else None
-
+# Define parameters
 # Set a timeout threshold for detecting no-responsive cameras
-timeout_threshold = 10
-last_attempt_1 = time.time()
-last_attempt_2 = time.time()
+timeout_threshold = 30
 
-# Set interval in seconds
-interval = 60
-image_count_cam1 = 0 # Counter to name saved images from camera 1
-image_count_cam2 = 0 # Counter to name saved images from camera 2
-last_capture_time = time.time()
-first_camera_capture = True
+# List of initialized cameras
+cameras = initialize_cameras(opt_2, url_camera)
 
 # Create folder to save images
 current_dir = os.path.dirname(__file__)
@@ -43,84 +96,52 @@ os.makedirs(folder_path, exist_ok=True)
 print(f"Folder '{folder_name}' created successfully on data.")
 
 try:
-  while cap1 or cap2:
-    # Capture frame-by-frame
-    ret1, frame1 = cap1.read()
-    ret2, frame2 = cap2.read() if cap2 else (None, None)
+  while True:
+    for camera in cameras:
+      cap = camera['cap']
 
-    # Check for camera response timeout
-    if ret1 == False:
-      if (time.time() - last_attempt_1) >= timeout_threshold:
-        print(f'Error: {camera1} is not responding.')
-        print('Reinitializing camera connection ...')
+      time.sleep(60)
+      ret, frame = cap.read()
 
-        # Release and reinitialize camera 1
-        cap1.release()
-        time.sleep(2)
+      if not ret:
+        # Check for camera response timeout
+        if (time.time() - camera['last_attempt']) >= timeout_threshold:
+          print(f'Error: The {camera['name']} is not repsonding.')
+          print('Reinitializing camera connection ...')
 
-        cap1 = initialize_camera(camera1)
-        last_attempt_1 = time.time()
+          # Release and reinitialize camera
+          cap.release()
+          time.sleep(2)
 
-    if ret2 == False:
-      if (time.time() - last_attempt_2) >= timeout_threshold:
-        print(f'Error: {camera2} is not responding.')
-        print('Reinitializing camera connection ...')
+          camera['cap'] = cv2.VideoCapture(url_camera[f'channel{camera['channel']}'])
+          camera['last_attempt']= time.time()
+        continue
 
-        # Release and reinitialize camera 1
-        cap2.release()
-        time.sleep(2)
-
-        cap2 = initialize_camera(camera2)
-        last_attempt_2 = time.time()
-
-    # Check if the interval time has passed
-    current_time = time.time()
-
-    if current_time - last_capture_time >= interval:
-      if first_camera_capture:
-        if ret1:
-          # Capture de current date
-          now = datetime.now()
-
-          # Extract current hour, minute, and second as string
-          current_time = now.strftime('%H_%M_%S')
-
-          # Save the frame as an image file
-          image_name = f'{folder_path}/cam1_frame_{image_count_cam1}_{current_time}.jpg'
-          cv2.imwrite(image_name, frame1)
-          print(f'Cam1 - Captured {image_count_cam1}')
-
-          image_count_cam1 += 1
-        last_capture_time = time.time()
-        first_camera_capture = not first_camera_capture
       else:
-        if ret2:
-          # Capture de current date
+          # Capture current date
           now = datetime.now()
 
           # Extract current hour, minute, and second as string
           current_time = now.strftime('%H_%M_%S')
 
           # Save the frame as an image file
-          image_name = f'{folder_path}/cam2_frame_{image_count_cam2}_{current_time}.jpg'
-          cv2.imwrite(image_name, frame2)
-          print(f'Cam2 - Captured {image_count_cam2}')
+          camera['capture_num'] += 1
+          image_name = f'{folder_path}/Cam{camera['channel']}_frame_{camera['capture_num']}_{current_time}.jpg'
+          cv2.imwrite(image_name, frame)
+          print(f'{camera['name']} - Captured {camera['capture_num']}')
 
-          image_count_cam2 += 1
-        last_capture_time = time.time()
-        first_camera_capture = not first_camera_capture
+      # break the loop if 'q' is pressed
+      if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
-    # break the loop if 'q' is pressed
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-      break
 except KeyboardInterrupt:
   # Handle the situation when the user interrupts the program (Ctrl+C)
+  for camera in cameras:
+    camera['cap'].release()
   print('Image capture interrupted.')
 
 # Release the camera and close any Opencv windows
-cap1.release() if cap1 else None
-cap2.release() if cap2 else None
+for camera in cameras:
+  camera['cap'].release()
+
 cv2.destroyAllWindows()
-
-
-
