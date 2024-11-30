@@ -1,0 +1,261 @@
+@data{DVN/7CBGOS_2019,
+author = {Xie, Liangbin},
+publisher = {Harvard Dataverse},
+title = {{Hardhat}},
+year = {2019},
+version = {V1},
+doi = {10.7910/DVN/7CBGOS},
+url = {https://doi.org/10.7910/DVN/7CBGOS}
+}
+
+@misc{
+ppe-safety-xxlav_dataset,
+title = { ppe safety Dataset },
+type = { Open Source Dataset },
+author = { oat },
+howpublished = { \url{ https://universe.roboflow.com/oat-lgzyg/ppe-safety-xxlav } },
+url = { https://universe.roboflow.com/oat-lgzyg/ppe-safety-xxlav },
+journal = { Roboflow Universe },
+publisher = { Roboflow },
+year = { 2024 },
+month = { feb },
+note = { visited on 2024-11-14 },
+}
+
+@misc{
+ppe-v1.1_dataset,
+title = { PPE-V1.1 Dataset },
+type = { Open Source Dataset },
+author = { TrialForObjectDetection },
+howpublished = { \url{ https://universe.roboflow.com/trialforobjectdetection/ppe-v1.1 } },
+url = { https://universe.roboflow.com/trialforobjectdetection/ppe-v1.1 },
+journal = { Roboflow Universe },
+publisher = { Roboflow },
+year = { 2022 },
+month = { dec },
+note = { visited on 2024-11-14 },
+}
+
+@misc{
+harness-unsafe-zpayd_dataset,
+title = { Harness Unsafe Dataset },
+type = { Open Source Dataset },
+author = { FireDetection },
+howpublished = { \url{ https://universe.roboflow.com/firedetection-iiutc/harness-unsafe-zpayd } },
+url = { https://universe.roboflow.com/firedetection-iiutc/harness-unsafe-zpayd },
+journal = { Roboflow Universe },
+publisher = { Roboflow },
+year = { 2024 },
+month = { oct },
+note = { visited on 2024-11-15 },
+}
+
+@misc{
+harness-belt_dataset,
+title = { harness-belt Dataset },
+type = { Open Source Dataset },
+author = { harnessbelt },
+howpublished = { \url{ https://universe.roboflow.com/harnessbelt/harness-belt } },
+url = { https://universe.roboflow.com/harnessbelt/harness-belt },
+journal = { Roboflow Universe },
+publisher = { Roboflow },
+year = { 2024 },
+month = { mar },
+note = { visited on 2024-11-15 },
+}
+
+@misc{
+jyfyfi_dataset,
+title = { jyfyfi Dataset },
+type = { Open Source Dataset },
+author = { prafull kumar },
+howpublished = { \url{ https://universe.roboflow.com/prafull-kumar-h8raa/jyfyfi } },
+url = { https://universe.roboflow.com/prafull-kumar-h8raa/jyfyfi },
+journal = { Roboflow Universe },
+publisher = { Roboflow },
+year = { 2024 },
+month = { jun },
+note = { visited on 2024-11-15 },
+}
+
+@misc{
+vest-htekl_dataset,
+title = { VEST Dataset },
+type = { Open Source Dataset },
+author = { harami },
+howpublished = { \url{ https://universe.roboflow.com/harami-s16sl/vest-htekl } },
+url = { https://universe.roboflow.com/harami-s16sl/vest-htekl },
+journal = { Roboflow Universe },
+publisher = { Roboflow },
+year = { 2024 },
+month = { jan },
+note = { visited on 2024-11-15 },
+}
+
+@misc{
+full-body-harness_dataset,
+title = { full body harness Dataset },
+type = { Open Source Dataset },
+author = { yaswant tiwari },
+howpublished = { \url{ https://universe.roboflow.com/yaswant-tiwari/full-body-harness } },
+url = { https://universe.roboflow.com/yaswant-tiwari/full-body-harness },
+journal = { Roboflow Universe },
+publisher = { Roboflow },
+year = { 2023 },
+month = { jul },
+note = { visited on 2024-11-15 },
+}
+
+@misc{
+k3-dataset-datains-lyide_dataset,
+title = { K3 Dataset (DataIns) Dataset },
+type = { Open Source Dataset },
+author = { Salsabila Hasna },
+howpublished = { \url{ https://universe.roboflow.com/salsabila-hasna-vwaum/k3-dataset-datains-lyide } },
+url = { https://universe.roboflow.com/salsabila-hasna-vwaum/k3-dataset-datains-lyide },
+journal = { Roboflow Universe },
+publisher = { Roboflow },
+year = { 2024 },
+month = { oct },
+note = { visited on 2024-11-16 },
+}
+
+@misc{
+ppe3.0_dataset,
+title = { PPE3.0 Dataset },
+type = { Open Source Dataset },
+author = { bangga },
+howpublished = { \url{ https://universe.roboflow.com/bangga/ppe3.0 } },
+url = { https://universe.roboflow.com/bangga/ppe3.0 },
+journal = { Roboflow Universe },
+publisher = { Roboflow },
+year = { 2024 },
+month = { aug },
+note = { visited on 2024-11-16 },
+}
+
+@misc{
+yui-2s6gc_dataset,
+title = { yui Dataset },
+type = { Open Source Dataset },
+author = { Muzzle },
+howpublished = { \url{ https://universe.roboflow.com/muzzle-su95g/yui-2s6gc } },
+url = { https://universe.roboflow.com/muzzle-su95g/yui-2s6gc },
+journal = { Roboflow Universe },
+publisher = { Roboflow },
+year = { 2024 },
+month = { apr },
+note = { visited on 2024-11-16 },
+}
+
+@misc{
+try-4xf1y_dataset,
+title = { Try Dataset },
+type = { Open Source Dataset },
+author = { bodyhardness },
+howpublished = { \url{ https://universe.roboflow.com/bodyhardness/try-4xf1y } },
+url = { https://universe.roboflow.com/bodyhardness/try-4xf1y },
+journal = { Roboflow Universe },
+publisher = { Roboflow },
+year = { 2024 },
+month = { feb },
+note = { visited on 2024-11-16 },
+}
+
+@misc{
+hijab-wwjfj-zvuhx_dataset,
+title = { Hijab Dataset },
+type = { Open Source Dataset },
+author = { acc2 },
+howpublished = { \url{ https://universe.roboflow.com/acc2/hijab-wwjfj-zvuhx } },
+url = { https://universe.roboflow.com/acc2/hijab-wwjfj-zvuhx },
+journal = { Roboflow Universe },
+publisher = { Roboflow },
+year = { 2024 },
+month = { oct },
+note = { visited on 2024-11-29 },
+}
+
+@misc{
+hairnet-detection-65sxz-1j21v_dataset,
+title = { HairNet detection Dataset },
+type = { Open Source Dataset },
+author = { personal protective equipment },
+howpublished = { \url{ https://universe.roboflow.com/personal-protective-equipment-mtl62/hairnet-detection-65sxz-1j21v } },
+url = { https://universe.roboflow.com/personal-protective-equipment-mtl62/hairnet-detection-65sxz-1j21v },
+journal = { Roboflow Universe },
+publisher = { Roboflow },
+year = { 2024 },
+month = { nov },
+note = { visited on 2024-11-29 },
+}
+
+@misc{
+goggle-mask_dataset,
+title = { goggle-mask Dataset },
+type = { Open Source Dataset },
+author = { goggles and mask },
+howpublished = { \url{ https://universe.roboflow.com/goggles-and-mask-ejzan/goggle-mask } },
+url = { https://universe.roboflow.com/goggles-and-mask-ejzan/goggle-mask },
+journal = { Roboflow Universe },
+publisher = { Roboflow },
+year = { 2023 },
+month = { nov },
+note = { visited on 2024-11-29 },
+}
+
+@misc{
+detect-worker_dataset,
+title = { Detect worker Dataset },
+type = { Open Source Dataset },
+author = { Kwon Soonbin },
+howpublished = { \url{ https://universe.roboflow.com/kwon-soonbin/detect-worker } },
+url = { https://universe.roboflow.com/kwon-soonbin/detect-worker },
+journal = { Roboflow Universe },
+publisher = { Roboflow },
+year = { 2024 },
+month = { feb },
+note = { visited on 2024-11-29 },
+}
+
+@misc{
+cap-jby6j_dataset,
+title = { cap Dataset },
+type = { Open Source Dataset },
+author = { PavithraP },
+howpublished = { \url{ https://universe.roboflow.com/pavithrap/cap-jby6j } },
+url = { https://universe.roboflow.com/pavithrap/cap-jby6j },
+journal = { Roboflow Universe },
+publisher = { Roboflow },
+year = { 2024 },
+month = { jul },
+note = { visited on 2024-11-29 },
+}
+
+@misc{
+hat-head_dataset,
+title = { hat-head Dataset },
+type = { Open Source Dataset },
+author = { Tugas Akhir },
+howpublished = { \url{ https://universe.roboflow.com/tugas-akhir-kggsl/hat-head } },
+url = { https://universe.roboflow.com/tugas-akhir-kggsl/hat-head },
+journal = { Roboflow Universe },
+publisher = { Roboflow },
+year = { 2023 },
+month = { jun },
+note = { visited on 2024-11-29 },
+}
+
+@misc{
+face_detect-h5fcb_dataset,
+title = { face_detect Dataset },
+type = { Open Source Dataset },
+author = { Guru Nanak Dev University Amritsar },
+howpublished = { \url{ https://universe.roboflow.com/guru-nanak-dev-university-amritsar/face_detect-h5fcb } },
+url = { https://universe.roboflow.com/guru-nanak-dev-university-amritsar/face_detect-h5fcb },
+journal = { Roboflow Universe },
+publisher = { Roboflow },
+year = { 2023 },
+month = { mar },
+note = { visited on 2024-11-29 },
+}
