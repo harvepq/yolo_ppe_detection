@@ -7,4 +7,7 @@ dependencies:
   - pip:
       - jupyter==1.1.1
       - opencv-python==4.10.0.84
+      - matplotlib==3.9.2
+      - python-dotenv==1.0.1
+      - roboflow==1.1.49
 prefix: /home/harvey/anaconda3/envs/data_preprocessing
