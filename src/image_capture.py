@@ -106,14 +106,14 @@ try:
       if not ret:
         # Check for camera response timeout
         if (time.time() - camera['last_attempt']) >= timeout_threshold:
-          print(f'Error: The {camera['name']} is not repsonding.')
+          print(f'Error: The {camera["name"]} is not repsonding.')
           print('Reinitializing camera connection ...')
 
           # Release and reinitialize camera
           cap.release()
           time.sleep(2)
 
-          camera['cap'] = cv2.VideoCapture(url_camera[f'channel{camera['channel']}'])
+          camera['cap'] = cv2.VideoCapture(url_camera[f'channel{camera["channel"]}'])
           camera['last_attempt']= time.time()
         continue
 
@@ -126,9 +126,9 @@ try:
 
           # Save the frame as an image file
           camera['capture_num'] += 1
-          image_name = f'{folder_path}/Cam{camera['channel']}_frame_{camera['capture_num']}_{current_time}.jpg'
+          image_name = f'{folder_path}/Cam{camera["channel"]}_frame_{camera["capture_num"]}_{current_time}.jpg'
           cv2.imwrite(image_name, frame)
-          print(f'{camera['name']} - Captured {camera['capture_num']}')
+          print(f'{camera["name"]} - Captured {camera["capture_num"]}')
 
       # break the loop if 'q' is pressed
       if cv2.waitKey(1) & 0xFF == ord('q'):
