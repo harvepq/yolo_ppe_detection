@@ -1,0 +1,13 @@
+name: yolo_detection
+channels:
+  - defaults
+dependencies:
+  - python=3.12.7
+  - pip
+  - pip:
+      - jupyter==1.1.1
+      - ultralytics==8.2.103
+      - roboflow==1.1.49
+      - comet_ml==3.47.4
+      - decord==0.6.0
+prefix: /home/harvey/anaconda3/envs/yolo_detection
