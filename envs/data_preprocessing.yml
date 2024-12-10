@@ -10,4 +10,5 @@ dependencies:
       - matplotlib==3.9.2
       - python-dotenv==1.0.1
       - roboflow==1.1.49
+      - decord==0.6.0
 prefix: /home/harvey/anaconda3/envs/data_preprocessing
