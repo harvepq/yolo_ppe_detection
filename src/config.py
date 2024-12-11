@@ -33,6 +33,9 @@ PROJECT_NAME = os.getenv("PROJECT_NAME")
 DATASET_VERSION = os.getenv("DATASET_VERSION")
 DATASET_FORMAT = os.getenv("DATASET_FORMAT")
 
+# Dataset to train dir
+DATASET_DIR = PROCESSED_DATA_DIR / f'ppe_dataset_v{DATASET_VERSION}'
+
 # If tqdm is installed, configure loguru with tqdm.write
 # https://github.com/Delgan/loguru/issues/135
 # try:
