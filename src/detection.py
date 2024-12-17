@@ -20,13 +20,19 @@ class ObjectDetection:
     self.email_send = False
     self.model = YOLO(model)
 
+    # Alert variables
+    self.timer_active = False
+    self.detection_duration = 10
+    self.timer_start_time = None
+    self.detectioin_count = 0
+
     # Model information
     self.config = {
       "stream": False,
       "conf": 0.8,
       "iou": 0.7,
       "imgsz": 320,
-      "device": 0,
+      "device": None,
       "vid_stride": 1,
       "stream_buffer": False,
       "visualize": False,
@@ -110,6 +116,25 @@ class ObjectDetection:
     with self.lock:
       return self.current_frame
 
+  def check_alert(self, class_ids):
+    # if len(class_ids) > 0:
+      current_time = time.time()
+      if 1 in class_ids:
+        if not self.timer_active:
+          self.timer_active = True
+          self.timer_start_time = current_time
+          self.detectioin_count = 1
+        else:
+          self.detectioin_count += 1
+      if self.timer_active:
+        elapsed_time = current_time - self.timer_start_time
+        if elapsed_time >= self.detection_duration:
+          if self.detectioin_count >= 40:
+            send_email()
+          self.timer_active = False
+          self.timer_start_time = None
+          self.detectioin_count = 0
+
   def __call__(self):
     # Run object detection on video frames from a camera stream, plotting and showing the results
     assert self.capture.isOpened()
@@ -125,15 +150,7 @@ class ObjectDetection:
 
       results = self.predict(frame)
       frame, class_ids = self.plot_bboxes(results, frame)
-
-      # if len(class_ids) > 0:
-      if 1 in class_ids:
-        if not self.email_send:
-          send_email()
-          self.email_send = True
-      else:
-        self.email_send = False
-
+      self.check_alert(class_ids)
       self.display_fps(frame)
       cv2.imshow("PPE Detectoin", frame)
       frame_count += 1
@@ -143,5 +160,5 @@ class ObjectDetection:
     self.capture.release()
     cv2.destroyAllWindows()
 
-detector = ObjectDetection(0, "models/best.pt", imgsz=640, conf=0.8, classes=[0,1], verbose=False, iou=0.7)
+detector = ObjectDetection(0, "models/best.pt", device=0, imgsz=640, conf=0.8, classes=[0,1], verbose=False, iou=0.7)
 detector()
