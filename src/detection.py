@@ -25,6 +25,10 @@ class ObjectDetection:
     self.detection_duration = 10
     self.timer_start_time = None
     self.detectioin_count = 0
+    self.check_alert_thread = threading.Thread(target=self.alert_worker)
+    self.alert_thread_active = True
+    self.class_ids = []
+    self.check_alert_thread.start()
 
     # Model information
     self.config = {
@@ -116,24 +120,37 @@ class ObjectDetection:
     with self.lock:
       return self.current_frame
 
-  def check_alert(self, class_ids):
+  def update_class_ids(self, class_ids):
+    with self.lock:
+      self.class_ids = class_ids
+
+  def alert_worker(self):
+      while self.alert_thread_active:
+        with self.lock:
+          class_ids = list(self.class_ids)
     # if len(class_ids) > 0:
-      current_time = time.time()
-      if 1 in class_ids:
-        if not self.timer_active:
-          self.timer_active = True
-          self.timer_start_time = current_time
-          self.detectioin_count = 1
-        else:
-          self.detectioin_count += 1
-      if self.timer_active:
-        elapsed_time = current_time - self.timer_start_time
-        if elapsed_time >= self.detection_duration:
-          if self.detectioin_count >= 40:
-            send_email()
-          self.timer_active = False
-          self.timer_start_time = None
-          self.detectioin_count = 0
+        print(self.detectioin_count)
+        current_time = time.time()
+        if 1 in class_ids:
+          if not self.timer_active:
+            self.timer_active = True
+            self.timer_start_time = current_time
+            self.detectioin_count = 1
+          else:
+            self.detectioin_count += 1
+        if self.timer_active:
+          elapsed_time = current_time - self.timer_start_time
+          if elapsed_time >= self.detection_duration:
+            if self.detectioin_count >= 6:
+              send_email()
+            self.timer_active = False
+            self.timer_start_time = None
+            self.detectioin_count = 0
+        time.sleep(0.5)
+
+  def stop_alert_worker(self):
+    self.alert_thread_active = False
+    self.check_alert_thread.join()
 
   def __call__(self):
     # Run object detection on video frames from a camera stream, plotting and showing the results
@@ -150,13 +167,15 @@ class ObjectDetection:
 
       results = self.predict(frame)
       frame, class_ids = self.plot_bboxes(results, frame)
-      self.check_alert(class_ids)
+      # self.check_alert(class_ids)
+      self.update_class_ids(class_ids)
       self.display_fps(frame)
       cv2.imshow("PPE Detectoin", frame)
       frame_count += 1
       if cv2.waitKey(5) & 0xFF == 27:
         break
     self.stop_capture()
+    self.stop_alert_worker()
     self.capture.release()
     cv2.destroyAllWindows()
 
