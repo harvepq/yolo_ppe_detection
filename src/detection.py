@@ -9,26 +9,30 @@ from ultralytics.utils.plotting import Annotator, colors
 def send_email():
   print("Correo enviado, se detecto!")
 
-
 class ObjectDetection:
-  def __init__(self, capture_index, model):
+  def __init__(self, source, model, **kwargs):
     # Initializes an ObjectDetection instance with a given camera index
-    self.capture_index = capture_index
+    self.capture = cv2.VideoCapture(source)
+    self.run = False
+    self.current_frame = None
+    self.loop_thread = None
+    self.lock = threading.Lock()
     self.email_send = False
+    self.model = YOLO(model)
 
     # Model information
     self.config = {
       "stream": False,
-      "conf": 0.7,
+      "conf": 0.8,
       "iou": 0.7,
-      "imgsz": 640,
+      "imgsz": 320,
       "device": 0,
       "vid_stride": 1,
       "stream_buffer": False,
       "visualize": False,
       "augment": False,
       "agnostic_nms": False,
-      "classes": [0,1],
+      "classes": None,
       "show": False,
       "save": False,
       "save_frames": False,
@@ -38,9 +42,11 @@ class ObjectDetection:
       "show_labels": False,
       "show_conf": False,
       "show_boxes": False,
-      "verbose": False
+      "verbose": True
     }
-    self.model = YOLO(model)
+
+    for k, v in kwargs.items():
+      self.config[k] = v
 
     # Visual information
     self.annotator = None
@@ -82,19 +88,41 @@ class ObjectDetection:
       class_ids.append(cls)
       self.annotator.box_label(box, label=names[int(cls)], color=colors(int(cls), True))
     return frame, class_ids
-  
+
+  def thread_loop(self):
+    while self.run:
+      ret, frame = self.capture.read()
+      assert ret
+      with self.lock:
+        self.current_frame = frame
+      time.sleep(0.01)
+
+  def start_capture(self):
+    self.run = True
+    self.loop_thread = threading.Thread(target=self.thread_loop)
+    self.loop_thread.start()
+
+  def stop_capture(self):
+    self.run = False
+    self.loop_thread.join()
+
+  def get_frame(self):
+    with self.lock:
+      return self.current_frame
+
   def __call__(self):
     # Run object detection on video frames from a camera stream, plotting and showing the results
-    cap = cv2.VideoCapture(self.capture_index)
-
-    assert cap.isOpened()
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 640)
+    assert self.capture.isOpened()
+    self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, self.config["imgsz"])
+    self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, self.config["imgsz"])
+    self.start_capture()
     frame_count = 0
     while True:
       self.start_time = time.time()
-      ret, frame = cap.read()
-      assert ret
+      frame = self.get_frame()
+      if frame is None:
+        continue
+
       results = self.predict(frame)
       frame, class_ids = self.plot_bboxes(results, frame)
 
@@ -105,14 +133,15 @@ class ObjectDetection:
           self.email_send = True
       else:
         self.email_send = False
-      
+
       self.display_fps(frame)
       cv2.imshow("PPE Detectoin", frame)
       frame_count += 1
       if cv2.waitKey(5) & 0xFF == 27:
         break
-    cap.release()
+    self.stop_capture()
+    self.capture.release()
     cv2.destroyAllWindows()
 
-detector = ObjectDetection(0, "models/best.pt")
+detector = ObjectDetection(0, "models/best.pt", imgsz=640, conf=0.8, classes=[0,1], verbose=False, iou=0.7)
 detector()
