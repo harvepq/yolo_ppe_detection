@@ -17,6 +17,29 @@ class ObjectDetection:
     self.email_send = False
 
     # Model information
+    self.config = {
+      "stream": False,
+      "conf": 0.7,
+      "iou": 0.7,
+      "imgsz": 640,
+      "device": 0,
+      "vid_stride": 1,
+      "stream_buffer": False,
+      "visualize": False,
+      "augment": False,
+      "agnostic_nms": False,
+      "classes": [0,1],
+      "show": False,
+      "save": False,
+      "save_frames": False,
+      "save_txt": False,
+      "save_conf": False,
+      "save_crop": False,
+      "show_labels": False,
+      "show_conf": False,
+      "show_boxes": False,
+      "verbose": False
+    }
     self.model = YOLO(model)
 
     # Visual information
@@ -29,7 +52,7 @@ class ObjectDetection:
 
   def predict(self, frame):
     # Run prediction using a YOLO model for the input image 'frame'
-    results = self.model(frame, conf=0.7,verbose=False)
+    results = self.model(frame, **self.config)
     return results
 
   def display_fps(self, frame):
