@@ -22,5 +22,6 @@ hat_head_dataset
 background_images
 comercio_1
 comercio_2024_10_31
-10478
-7
+cap_2_dataset
+12181
+8
